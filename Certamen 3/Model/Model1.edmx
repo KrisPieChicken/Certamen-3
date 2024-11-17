@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EVALUACION3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACREDITACION">
+          <Key>
+            <PropertyRef Name="ID_ACREDITACION" />
+          </Key>
+          <Property Name="ID_ACREDITACION" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_TIPO_ACREDITACION" Type="int" Nullable="false" />
+          <Property Name="DV_CLIENTE" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="RUT_CLIENTE" Type="int" Nullable="false" />
+          <Property Name="NOM_USUARIO" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="FECHA_CREADO" Type="datetime" Nullable="false" />
+          <Property Name="FECHA_CONTABLE" Type="date" Nullable="false" />
+          <Property Name="TOTAL_N_CUOTAS" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AFP">
+          <Key>
+            <PropertyRef Name="ID_AFP" />
+          </Key>
+          <Property Name="ID_AFP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOM_AFP" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="COMISION" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="RUT_CLIENTE" />
+            <PropertyRef Name="DV_CLIENTE" />
+          </Key>
+          <Property Name="RUT_CLIENTE" Type="int" Nullable="false" />
+          <Property Name="DV_CLIENTE" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="NOMBRES_CLIENTE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="APELLIDOS_CLIENTE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FECHA_NACIMIENTO" Type="date" Nullable="false" />
+          <Property Name="ID_AFP" Type="int" Nullable="false" />
+          <Property Name="REMUNERACION_CLIENTE" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="ID_ESTADO" />
+          </Key>
+          <Property Name="ID_ESTADO" Type="int" Nullable="false" />
+          <Property Name="DESC_ESTADO" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TIPO_ACREDITACION">
+          <Key>
+            <PropertyRef Name="ID_TIPO_ACREDITACION" />
+          </Key>
+          <Property Name="ID_TIPO_ACREDITACION" Type="int" Nullable="false" />
+          <Property Name="DESC_TIPO_ACREDITACION" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="NOM_USUARIO" />
+          </Key>
+          <Property Name="NOM_USUARIO" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NOMBRES_USUARIO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="APELLIDOS_USUARIO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CONTRASEÑA_USUARIO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_ESTADO" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ACREDITACION_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="ACREDITACION" Type="Self.ACREDITACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="RUT_CLIENTE" />
+              <PropertyRef Name="DV_CLIENTE" />
+            </Principal>
+            <Dependent Role="ACREDITACION">
+              <PropertyRef Name="RUT_CLIENTE" />
+              <PropertyRef Name="DV_CLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACREDITACION_TIPO_ACREDITACION">
+          <End Role="TIPO_ACREDITACION" Type="Self.TIPO_ACREDITACION" Multiplicity="1" />
+          <End Role="ACREDITACION" Type="Self.ACREDITACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_ACREDITACION">
+              <PropertyRef Name="ID_TIPO_ACREDITACION" />
+            </Principal>
+            <Dependent Role="ACREDITACION">
+              <PropertyRef Name="ID_TIPO_ACREDITACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACREDITACION_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="ACREDITACION" Type="Self.ACREDITACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="NOM_USUARIO" />
+            </Principal>
+            <Dependent Role="ACREDITACION">
+              <PropertyRef Name="NOM_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_AFP">
+          <End Role="AFP" Type="Self.AFP" Multiplicity="1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AFP">
+              <PropertyRef Name="ID_AFP" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="ID_AFP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIO_ESTADO">
+          <End Role="ESTADO" Type="Self.ESTADO" Multiplicity="1" />
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADO">
+              <PropertyRef Name="ID_ESTADO" />
+            </Principal>
+            <Dependent Role="USUARIO">
+              <PropertyRef Name="ID_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="EVALUACION3ModelStoreContainer">
+          <EntitySet Name="ACREDITACION" EntityType="Self.ACREDITACION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AFP" EntityType="Self.AFP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESTADO" EntityType="Self.ESTADO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPO_ACREDITACION" EntityType="Self.TIPO_ACREDITACION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ACREDITACION_CLIENTE" Association="Self.FK_ACREDITACION_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="ACREDITACION" EntitySet="ACREDITACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACREDITACION_TIPO_ACREDITACION" Association="Self.FK_ACREDITACION_TIPO_ACREDITACION">
+            <End Role="TIPO_ACREDITACION" EntitySet="TIPO_ACREDITACION" />
+            <End Role="ACREDITACION" EntitySet="ACREDITACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACREDITACION_USUARIO" Association="Self.FK_ACREDITACION_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="ACREDITACION" EntitySet="ACREDITACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_AFP" Association="Self.FK_CLIENTE_AFP">
+            <End Role="AFP" EntitySet="AFP" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIO_ESTADO" Association="Self.FK_USUARIO_ESTADO">
+            <End Role="ESTADO" EntitySet="ESTADO" />
+            <End Role="USUARIO" EntitySet="USUARIO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EVALUACION3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACREDITACION">
+          <Key>
+            <PropertyRef Name="ID_ACREDITACION" />
+          </Key>
+          <Property Name="ID_ACREDITACION" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_TIPO_ACREDITACION" Type="Int32" Nullable="false" />
+          <Property Name="DV_CLIENTE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RUT_CLIENTE" Type="Int32" Nullable="false" />
+          <Property Name="NOM_USUARIO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FECHA_CREADO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FECHA_CONTABLE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TOTAL_N_CUOTAS" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CLIENTE" Relationship="Self.FK_ACREDITACION_CLIENTE" FromRole="ACREDITACION" ToRole="CLIENTE" />
+          <NavigationProperty Name="TIPO_ACREDITACION" Relationship="Self.FK_ACREDITACION_TIPO_ACREDITACION" FromRole="ACREDITACION" ToRole="TIPO_ACREDITACION" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_ACREDITACION_USUARIO" FromRole="ACREDITACION" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="AFP">
+          <Key>
+            <PropertyRef Name="ID_AFP" />
+          </Key>
+          <Property Name="ID_AFP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOM_AFP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COMISION" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CLIENTEs" Relationship="Self.FK_CLIENTE_AFP" FromRole="AFP" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="RUT_CLIENTE" />
+            <PropertyRef Name="DV_CLIENTE" />
+          </Key>
+          <Property Name="RUT_CLIENTE" Type="Int32" Nullable="false" />
+          <Property Name="DV_CLIENTE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NOMBRES_CLIENTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="APELLIDOS_CLIENTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FECHA_NACIMIENTO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ID_AFP" Type="Int32" Nullable="false" />
+          <Property Name="REMUNERACION_CLIENTE" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACREDITACIONs" Relationship="Self.FK_ACREDITACION_CLIENTE" FromRole="CLIENTE" ToRole="ACREDITACION" />
+          <NavigationProperty Name="AFP" Relationship="Self.FK_CLIENTE_AFP" FromRole="CLIENTE" ToRole="AFP" />
+        </EntityType>
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="ID_ESTADO" />
+          </Key>
+          <Property Name="ID_ESTADO" Type="Int32" Nullable="false" />
+          <Property Name="DESC_ESTADO" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_ESTADO" FromRole="ESTADO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TIPO_ACREDITACION">
+          <Key>
+            <PropertyRef Name="ID_TIPO_ACREDITACION" />
+          </Key>
+          <Property Name="ID_TIPO_ACREDITACION" Type="Int32" Nullable="false" />
+          <Property Name="DESC_TIPO_ACREDITACION" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ACREDITACIONs" Relationship="Self.FK_ACREDITACION_TIPO_ACREDITACION" FromRole="TIPO_ACREDITACION" ToRole="ACREDITACION" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="NOM_USUARIO" />
+          </Key>
+          <Property Name="NOM_USUARIO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NOMBRES_USUARIO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="APELLIDOS_USUARIO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONTRASEÑA_USUARIO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_ESTADO" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACREDITACIONs" Relationship="Self.FK_ACREDITACION_USUARIO" FromRole="USUARIO" ToRole="ACREDITACION" />
+          <NavigationProperty Name="ESTADO" Relationship="Self.FK_USUARIO_ESTADO" FromRole="USUARIO" ToRole="ESTADO" />
+        </EntityType>
+        <Association Name="FK_ACREDITACION_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="ACREDITACION" Type="Self.ACREDITACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="RUT_CLIENTE" />
+              <PropertyRef Name="DV_CLIENTE" />
+            </Principal>
+            <Dependent Role="ACREDITACION">
+              <PropertyRef Name="RUT_CLIENTE" />
+              <PropertyRef Name="DV_CLIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACREDITACION_TIPO_ACREDITACION">
+          <End Role="TIPO_ACREDITACION" Type="Self.TIPO_ACREDITACION" Multiplicity="1" />
+          <End Role="ACREDITACION" Type="Self.ACREDITACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPO_ACREDITACION">
+              <PropertyRef Name="ID_TIPO_ACREDITACION" />
+            </Principal>
+            <Dependent Role="ACREDITACION">
+              <PropertyRef Name="ID_TIPO_ACREDITACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACREDITACION_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="ACREDITACION" Type="Self.ACREDITACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="NOM_USUARIO" />
+            </Principal>
+            <Dependent Role="ACREDITACION">
+              <PropertyRef Name="NOM_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTE_AFP">
+          <End Role="AFP" Type="Self.AFP" Multiplicity="1" />
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AFP">
+              <PropertyRef Name="ID_AFP" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="ID_AFP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIO_ESTADO">
+          <End Role="ESTADO" Type="Self.ESTADO" Multiplicity="1" />
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADO">
+              <PropertyRef Name="ID_ESTADO" />
+            </Principal>
+            <Dependent Role="USUARIO">
+              <PropertyRef Name="ID_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EVALUACION3Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACREDITACIONs" EntityType="Self.ACREDITACION" />
+          <EntitySet Name="AFPs" EntityType="Self.AFP" />
+          <EntitySet Name="CLIENTEs" EntityType="Self.CLIENTE" />
+          <EntitySet Name="ESTADOes" EntityType="Self.ESTADO" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TIPO_ACREDITACION" EntityType="Self.TIPO_ACREDITACION" />
+          <EntitySet Name="USUARIOs" EntityType="Self.USUARIO" />
+          <AssociationSet Name="FK_ACREDITACION_CLIENTE" Association="Self.FK_ACREDITACION_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTEs" />
+            <End Role="ACREDITACION" EntitySet="ACREDITACIONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACREDITACION_TIPO_ACREDITACION" Association="Self.FK_ACREDITACION_TIPO_ACREDITACION">
+            <End Role="TIPO_ACREDITACION" EntitySet="TIPO_ACREDITACION" />
+            <End Role="ACREDITACION" EntitySet="ACREDITACIONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACREDITACION_USUARIO" Association="Self.FK_ACREDITACION_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="ACREDITACION" EntitySet="ACREDITACIONs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTE_AFP" Association="Self.FK_CLIENTE_AFP">
+            <End Role="AFP" EntitySet="AFPs" />
+            <End Role="CLIENTE" EntitySet="CLIENTEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIO_ESTADO" Association="Self.FK_USUARIO_ESTADO">
+            <End Role="ESTADO" EntitySet="ESTADOes" />
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(EVALUACION3Model.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(EVALUACION3Model.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EVALUACION3ModelStoreContainer" CdmEntityContainer="EVALUACION3Entities">
+          <EntitySetMapping Name="ACREDITACIONs">
+            <EntityTypeMapping TypeName="EVALUACION3Model.ACREDITACION">
+              <MappingFragment StoreEntitySet="ACREDITACION">
+                <ScalarProperty Name="ID_ACREDITACION" ColumnName="ID_ACREDITACION" />
+                <ScalarProperty Name="ID_TIPO_ACREDITACION" ColumnName="ID_TIPO_ACREDITACION" />
+                <ScalarProperty Name="DV_CLIENTE" ColumnName="DV_CLIENTE" />
+                <ScalarProperty Name="RUT_CLIENTE" ColumnName="RUT_CLIENTE" />
+                <ScalarProperty Name="NOM_USUARIO" ColumnName="NOM_USUARIO" />
+                <ScalarProperty Name="FECHA_CREADO" ColumnName="FECHA_CREADO" />
+                <ScalarProperty Name="FECHA_CONTABLE" ColumnName="FECHA_CONTABLE" />
+                <ScalarProperty Name="TOTAL_N_CUOTAS" ColumnName="TOTAL_N_CUOTAS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AFPs">
+            <EntityTypeMapping TypeName="EVALUACION3Model.AFP">
+              <MappingFragment StoreEntitySet="AFP">
+                <ScalarProperty Name="ID_AFP" ColumnName="ID_AFP" />
+                <ScalarProperty Name="NOM_AFP" ColumnName="NOM_AFP" />
+                <ScalarProperty Name="COMISION" ColumnName="COMISION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTEs">
+            <EntityTypeMapping TypeName="EVALUACION3Model.CLIENTE">
+              <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="RUT_CLIENTE" ColumnName="RUT_CLIENTE" />
+                <ScalarProperty Name="DV_CLIENTE" ColumnName="DV_CLIENTE" />
+                <ScalarProperty Name="NOMBRES_CLIENTE" ColumnName="NOMBRES_CLIENTE" />
+                <ScalarProperty Name="APELLIDOS_CLIENTE" ColumnName="APELLIDOS_CLIENTE" />
+                <ScalarProperty Name="FECHA_NACIMIENTO" ColumnName="FECHA_NACIMIENTO" />
+                <ScalarProperty Name="ID_AFP" ColumnName="ID_AFP" />
+                <ScalarProperty Name="REMUNERACION_CLIENTE" ColumnName="REMUNERACION_CLIENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESTADOes">
+            <EntityTypeMapping TypeName="EVALUACION3Model.ESTADO">
+              <MappingFragment StoreEntitySet="ESTADO">
+                <ScalarProperty Name="ID_ESTADO" ColumnName="ID_ESTADO" />
+                <ScalarProperty Name="DESC_ESTADO" ColumnName="DESC_ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EVALUACION3Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPO_ACREDITACION">
+            <EntityTypeMapping TypeName="EVALUACION3Model.TIPO_ACREDITACION">
+              <MappingFragment StoreEntitySet="TIPO_ACREDITACION">
+                <ScalarProperty Name="ID_TIPO_ACREDITACION" ColumnName="ID_TIPO_ACREDITACION" />
+                <ScalarProperty Name="DESC_TIPO_ACREDITACION" ColumnName="DESC_TIPO_ACREDITACION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIOs">
+            <EntityTypeMapping TypeName="EVALUACION3Model.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="NOM_USUARIO" ColumnName="NOM_USUARIO" />
+                <ScalarProperty Name="NOMBRES_USUARIO" ColumnName="NOMBRES_USUARIO" />
+                <ScalarProperty Name="APELLIDOS_USUARIO" ColumnName="APELLIDOS_USUARIO" />
+                <ScalarProperty Name="CONTRASEÑA_USUARIO" ColumnName="CONTRASEÑA_USUARIO" />
+                <ScalarProperty Name="ID_ESTADO" ColumnName="ID_ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="EVALUACION3Model.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="EVALUACION3Model.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="EVALUACION3Model.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="EVALUACION3Model.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EVALUACION3Model.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="EVALUACION3Model.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EVALUACION3Model.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="EVALUACION3Model.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="EVALUACION3Model.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
